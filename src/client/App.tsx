@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Todo, TodoFilterState } from './models/todo';
 
 import TodoInput from './components/todoInput';
@@ -103,6 +103,10 @@ function App() {
         );
     };
 
+    useEffect(() => {
+        handleSort(sortBy);
+    }, [sortBy, sortDirection]);
+
     return (
         <div className="flex flex-col justify-between h-svh">
             <div>
@@ -151,8 +155,8 @@ function App() {
                         <div
                             className="flex flex-wrap text-sm lg:text-base md:justify-center 
                             items-center px-2 py-1 border border-slate-950 max-w-2xl 
-                            md:mx-auto rounded-lg shadow-inner 
-                           bg-zinc-200 shadow-zinc-400 mx-1"
+                            md:mx-auto md:rounded-lg shadow-md 
+                           bg-stone-100 shadow-zinc-400"
                         >
                             <span className="font-bold">Sort by:</span>
                             {['created_at', 'title', 'status'].map((el) => (
