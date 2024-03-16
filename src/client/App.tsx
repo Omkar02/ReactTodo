@@ -153,7 +153,7 @@ function App() {
                     {/* ---------------------------TodoSort--------------------------- */}
                     <section className="mt-3 lg:max-w-4xl mx-auto">
                         <div
-                            className="flex flex-wrap text-sm lg:text-base md:justify-center 
+                            className="flex flex-wrap text-sm lg:text-base sm:justify-center 
                             items-center px-2 py-1 border border-slate-950 max-w-2xl 
                             md:mx-auto md:rounded-lg shadow-md 
                            bg-stone-100 shadow-zinc-400"
@@ -162,7 +162,7 @@ function App() {
                             {['created_at', 'title', 'status'].map((el) => (
                                 <button
                                     key={el}
-                                    className={`mx-1 p-1 border border-slate-950 rounded-lg m-1 w-[5.8rem] lg:w-28 ${el == sortBy ? 'bg-emerald-300' : ' bg-white'}`}
+                                    className={`mx-1 px-2 py-1 border border-slate-950 rounded-lg m-1 w-fit md:w-28 ${el == sortBy ? 'bg-emerald-300' : ' bg-white'}`}
                                     onClick={() => handleSort(el)}
                                 >
                                     {el.split('_').join(' ').toUpperCase()}
