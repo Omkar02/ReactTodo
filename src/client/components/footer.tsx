@@ -13,7 +13,7 @@ const technologies: Technology[] = [
 export default function Footer() {
     return (
         <footer
-            className="m-0 w-full bg-zinc-800 
+            className="m-0 w-full bg-zinc-800 text-xs md:text-base
             text-white text-center p-4 flex items-center justify-between"
         >
             <div className="text-left text-blue-200">
@@ -35,7 +35,7 @@ export default function Footer() {
                         key={tech.name}
                         src={tech.logoSrc}
                         alt={tech.name}
-                        className="w-8 h-8 mr-2"
+                        className="w-5 h-5 lg:w-8 lg:h-8 mr-2"
                     />
                 ))}
             </div>
