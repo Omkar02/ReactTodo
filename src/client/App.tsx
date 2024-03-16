@@ -111,20 +111,28 @@ function App() {
                     <section>
                         {/* ---------------------------TodoTitle--------------------------- */}
                         <h1 className="h1 text-center p-2">Task Manager</h1>
-                        <div className="mx-5 text-center lg:max-w-3xl lg:mx-auto bg-violet-100 border border-slate-950 rounded-lg px-2 py-1">
-                            <p className="">
+                        <ul
+                            className="mx-5 text-center lg:max-w-3xl lg:mx-auto text-xs md:text-sm
+                           bg-violet-100 border border-slate-950 rounded-lg px-2 py-1"
+                        >
+                            <li className="">
                                 This user-friendly task manager empowers you to
                                 create, update, and delete tasks.
-                            </p>
-                            <p>
+                            </li>
+                            <li>
                                 Assign titles, descriptions, and statuses for
                                 better organization.
-                            </p>
-                            <p>
+                            </li>
+                            <li>
                                 Filter tasks by status to prioritize your
                                 workload and stay on top of things!
-                            </p>
-                        </div>
+                            </li>
+                            <li className="bg-red-200 py-1 my-1 italic rounded-lg border border-black">
+                                Note: This is a dummy project, use to showcase
+                                my skill in React. Please do not add any
+                                sensistive information, here. Thanks
+                            </li>
+                        </ul>
                     </section>
                     {/* ---------------------------TodoStats--------------------------- */}
                     <section className="mt-2 mx-auto lg:max-w-4xl flex justify-center">
@@ -139,22 +147,24 @@ function App() {
                         <TodoInput handleAdd={handleAdd} />
                     </section>
                     {/* ---------------------------TodoSort--------------------------- */}
-                    <section className="mt-2 lg:max-w-4xl mx-auto">
+                    <section className="mt-3 lg:max-w-4xl mx-auto">
                         <div
-                            className="flex justify-center items-center px-2 py-1 border
-                           border-slate-950 max-w-2xl mx-auto rounded-lg shadow-inner 
-                           bg-zinc-200 shadow-zinc-400"
+                            className="flex flex-wrap text-sm lg:text-base md:justify-center 
+                            items-center px-2 py-1 border border-slate-950 max-w-2xl 
+                            md:mx-auto rounded-lg shadow-inner 
+                           bg-zinc-200 shadow-zinc-400 mx-1"
                         >
-                            Sort by:
+                            <span className="font-bold">Sort by:</span>
                             {['created_at', 'title', 'status'].map((el) => (
                                 <button
-                                    className={`mx-1 p-1 border border-slate-950 rounded-lg m-1 w-28 ${el == sortBy ? 'bg-emerald-300' : ' bg-white'}`}
+                                    key={el}
+                                    className={`mx-1 p-1 border border-slate-950 rounded-lg m-1 w-[5.8rem] lg:w-28 ${el == sortBy ? 'bg-emerald-300' : ' bg-white'}`}
                                     onClick={() => handleSort(el)}
                                 >
                                     {el.split('_').join(' ').toUpperCase()}
                                 </button>
                             ))}
-                            <span>Sort Direction:</span>
+                            <span className="font-bold">Sort Direction:</span>
                             <button
                                 className={`mx-1 p-1 border border-slate-950 rounded-lg m-1 w-20 ${sortDirection == 'asc' ? 'bg-yellow-300' : 'bg-orange-300'}`}
                                 onClick={handleSortDirectionChange}
@@ -164,7 +174,7 @@ function App() {
                         </div>
                     </section>
                     {/* ---------------------------TodoList--------------------------- */}
-                    <section className="lg:max-w-4xl mx-auto mt-2">
+                    <section className="lg:max-w-4xl mx-auto mt-3">
                         {filterItems.map((el) => (
                             <TodoCard
                                 key={el._id}
