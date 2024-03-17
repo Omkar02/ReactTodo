@@ -10,7 +10,7 @@ export default function TodoInput({ handleAdd }: TodoInputProps) {
         title: '',
         description: '',
         status: 'Todo',
-        created_at: '',
+        updated_at: '',
     });
     const [textAreaHeight, setTextAreaHeight] = useState(50);
 
@@ -26,7 +26,7 @@ export default function TodoInput({ handleAdd }: TodoInputProps) {
             | React.MouseEvent<HTMLButtonElement>,
     ) => {
         event.preventDefault();
-        task['created_at'] = new Date();
+        task['updated_at'] = new Date();
         // Handle form submission here
         handleAdd(task);
         // console.log('Task submitted:', task);
@@ -36,7 +36,7 @@ export default function TodoInput({ handleAdd }: TodoInputProps) {
             title: '',
             description: '',
             status: 'Todo',
-            created_at: '',
+            updated_at: '',
         });
         handleTakeNote(false);
     };
@@ -57,7 +57,7 @@ export default function TodoInput({ handleAdd }: TodoInputProps) {
                 title: '',
                 description: '',
                 status: 'Todo',
-                created_at: '',
+                updated_at: '',
             });
         }
     };

@@ -3,7 +3,7 @@ export interface Todo {
     title: string;
     description: string;
     status: string;
-    created_at: Date | string;
+    updated_at: Date | string;
 }
 
 export interface TodoInputProps {
