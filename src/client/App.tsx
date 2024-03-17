@@ -15,10 +15,10 @@ function sortTodos(
     return todos.slice().sort((a, b) => {
         let comparison = 0;
 
-        if (sortBy === 'created_at') {
+        if (sortBy === 'updated_at') {
             comparison =
-                new Date(a.created_at).getTime() -
-                new Date(b.created_at).getTime();
+                new Date(a.updated_at).getTime() -
+                new Date(b.updated_at).getTime();
         } else if (sortBy === 'title') {
             comparison = a.title.localeCompare(b.title);
         } else if (sortBy === 'status') {
@@ -42,7 +42,7 @@ function sortTodos(
 function App() {
     const [todoList, setTodoList] = useState<Todo[]>([]);
 
-    const [sortBy, setSortBy] = useState<string>('created_at');
+    const [sortBy, setSortBy] = useState<string>('updated_at');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
     const [filter, setFilter]: [
@@ -70,24 +70,71 @@ function App() {
     };
     // ---------------------------- TODO Activity Logic --------------------------------------------------
 
-    const handleAdd = (todo: Todo) => {
-        setTodoList((preState) => [...preState, todo]);
+    const handleAdd = async (todo: Todo) => {
+        try {
+            const response = await fetch('/api/todos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(todo),
+            });
+
+            if (response.ok) {
+                setTodoList((preState) => [...preState, todo]);
+            } else {
+                console.error('Error creating todo:', await response.text());
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
-    const handleUpdate = (id: number, key: string, val: string) => {
-        setTodoList((prevTodoList) =>
-            prevTodoList.map((todo) =>
-                todo._id === id
-                    ? { ...todo, [key]: val, created_at: new Date() }
-                    : todo,
-            ),
-        );
+    const handleUpdate = async (id: number, key: string, val: string) => {
+        try {
+            // Prepare the updated todo object
+            const updatedTodo = {
+                ...(todoList.find((todo) => todo._id === id) as Todo),
+                [key]: val,
+                updated_at: new Date(),
+            };
+
+            const response = await fetch(`/api/todos/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedTodo),
+            });
+
+            if (response.ok) {
+                // Update local state only if the API call succeeds
+                setTodoList((prevTodoList) =>
+                    prevTodoList.map((todo) =>
+                        todo._id === id ? updatedTodo : todo,
+                    ),
+                );
+            } else {
+                console.error('Error updating todo:', await response.text());
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
-    const handleDelete = (id: number) => {
-        setTodoList((prevTodoList) =>
-            prevTodoList.filter((todo) => todo._id !== id),
-        );
+    const handleDelete = async (id: number) => {
+        try {
+            const response = await fetch(`/api/todos/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                // Update local state only if the API call succeeds
+                setTodoList((prevTodoList) =>
+                    prevTodoList.filter((todo) => todo._id !== id),
+                );
+            } else {
+                console.error('Error deleting todo:', await response.text());
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     // ----------------------- Sorting Logic --------------------
@@ -106,6 +153,46 @@ function App() {
     useEffect(() => {
         handleSort(sortBy);
     }, [sortBy, sortDirection]);
+
+    // ----------------------- 1st Load fetching the data from db -----------------------
+    useEffect(() => {
+        async function fetchTodos() {
+            try {
+                const response = await fetch('/api/todos');
+                const data = await response.json();
+
+                // Transform response data to expected format
+                let todos = [];
+                if (data.length > 0) {
+                    todos = data[0].values.map(
+                        ([id, title, description, status, updated_at]: [
+                            number,
+                            string,
+                            string,
+                            string,
+                            string,
+                        ]) => {
+                            const todo: Todo = {
+                                _id: Number(id), // Explicitly convert to number
+                                title: title as string, // Assert type as string
+                                description: description as string,
+                                status: status as string,
+                                updated_at: new Date(updated_at), // Convert to Date object
+                            };
+
+                            return todo;
+                        },
+                    );
+                }
+
+                setTodoList(todos);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchTodos();
+    }, []);
 
     return (
         <div className="flex flex-col justify-between h-svh">
@@ -159,10 +246,11 @@ function App() {
                            bg-stone-100 shadow-zinc-400"
                         >
                             <span className="font-bold">Sort by:</span>
-                            {['created_at', 'title', 'status'].map((el) => (
+                            {['updated_at', 'title', 'status'].map((el) => (
                                 <button
                                     key={el}
-                                    className={`mx-1 px-2 py-1 border border-slate-950 rounded-lg m-1 w-fit md:w-28 ${el == sortBy ? 'bg-emerald-300' : ' bg-white'}`}
+                                    className={`mx-1 px-1 py-1 border border-slate-950 
+                                    rounded-lg w-fit md:w-28 ${el == sortBy ? 'bg-emerald-300' : ' bg-white'}`}
                                     onClick={() => handleSort(el)}
                                 >
                                     {el.split('_').join(' ').toUpperCase()}
