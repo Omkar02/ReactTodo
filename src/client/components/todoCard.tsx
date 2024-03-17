@@ -52,7 +52,7 @@ export default function TodoCard({
             </div>
             <div className="bg-zinc-800 w-full flex justify-between px-3 items-center">
                 <p className="text-white text-xs lg:text-sm font-mono">
-                    {todo.created_at?.toLocaleString('en-US', {
+                    {todo.updated_at?.toLocaleString('en-US', {
                         dateStyle: 'medium',
                         timeStyle: 'short',
                     })}
