@@ -10,7 +10,7 @@
  * @param {Function} props.handleFilter - Callback function to trigger filtering
  * @returns {JSX.Element} The rendered todo statistics component
  */
-
+import React from 'react';
 import { TodoStatsProps } from '../models/todo';
 import { getTodoColor } from '../util';
 
