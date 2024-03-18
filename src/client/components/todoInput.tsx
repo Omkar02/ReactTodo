@@ -1,3 +1,15 @@
+/**
+ * React component that renders a form for users to add new todos.
+ *
+ * This component provides functionalities for entering a title, description, and submitting the new todo.
+ * It also allows users to expand the form for adding notes within the description.
+ *
+ * @param {TodoInputProps} props - Component properties
+ * @param {Function} props.handleAdd - Callback function to handle adding a new todo
+ * @returns {JSX.Element} The rendered todo input form component
+ */
+
+import React from 'react';
 import { Todo, TodoInputProps } from '../models/todo';
 import { useEffect, useRef, useState } from 'react';
 import { IoMdClose, IoMdReturnRight } from 'react-icons/io';
@@ -96,6 +108,7 @@ export default function TodoInput({ handleAdd }: TodoInputProps) {
                         name="title"
                         value={task.title}
                         placeholder="Title"
+                        role="textbox"
                         onChange={handleUserInput}
                         required
                         className="w-full bg-zinc-50 text-2xl lg:text-3xl 
@@ -117,6 +130,7 @@ export default function TodoInput({ handleAdd }: TodoInputProps) {
                 <div className="absolute bottom-2 right-2 opacity-70 hover:opacity-90">
                     <button
                         type="reset"
+                        data-testid="close"
                         className="bg-zinc-100 hover:bg-red-500 
                             border border-slate-950 text-xl rounded-lg px-2 py-1
                             focus:outline-none shadow-md "
@@ -126,6 +140,7 @@ export default function TodoInput({ handleAdd }: TodoInputProps) {
                     </button>
                     <button
                         type="submit"
+                        data-testid="submit-button"
                         className="bg-green-400 hover:bg-emerald-400 
                             border border-slate-950 text-xl rounded-lg px-2 py-1
                             focus:outline-none shadow-md mx-2"

@@ -1,3 +1,16 @@
+/**
+ * React component that renders a single todo card.
+ *
+ * This component displays the details of a todo item and provides functionalities to update its status and delete it.
+ *
+ * @param {TodoCardProps} props - Component properties
+ * @param {Object} props.todo - The todo object containing details
+ * @param {Function} props.handleUpdate - Callback function to update a todo
+ * @param {Function} props.handleDelete - Callback function to delete a todo
+ * @returns {JSX.Element} The rendered todo card component
+ */
+
+import React from 'react';
 import { TodoCardProps } from '../models/todo';
 import { AiOutlineClose } from 'react-icons/ai';
 import { getTodoColor } from '../util';
@@ -59,6 +72,7 @@ export default function TodoCard({
                 </p>
                 <button
                     onClick={() => handleDelete(todo._id)}
+                    data-testid="delete-button"
                     className={`p-1 my-1 rounded-md bg-red-500 hover:bg-fuchsia-500
                     drop-shadow-lg md:hover:scale-110 transition-transform transform-gpu 
                     duration-300`}

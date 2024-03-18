@@ -1,3 +1,18 @@
+/**
+ * React component that renders the main application for managing todos.
+ *
+ * This component handles various functionalities:
+ *  - Fetches todo data from the backend API on initial load.
+ *  - Provides forms for adding new todos.
+ *  - Displays a list of existing todos along with details and functionalities to update or delete them.
+ *  - Offers filtering capabilities to narrow down the displayed todos.
+ *  - Allows sorting of todos based on different criteria and direction.
+ *  - Displays statistics about the number of todos in each status category.
+ *
+ * @returns {JSX.Element} The rendered todo management application component
+ */
+
+import React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { Todo, TodoFilterState } from './models/todo';
 
@@ -152,7 +167,7 @@ function App() {
 
     useEffect(() => {
         handleSort(sortBy);
-    }, [sortBy, sortDirection]);
+    }, [todoList, sortBy, sortDirection]);
 
     // ----------------------- 1st Load fetching the data from db -----------------------
     useEffect(() => {
@@ -240,29 +255,37 @@ function App() {
                     {/* ---------------------------TodoSort--------------------------- */}
                     <section className="mt-3 lg:max-w-4xl mx-auto">
                         <div
-                            className="flex flex-wrap text-sm lg:text-base sm:justify-center 
+                            className="flex flex-wrap text-sm lg:text-base justify-center 
                             items-center px-2 py-1 border border-slate-950 max-w-2xl 
-                            md:mx-auto md:rounded-lg shadow-md 
-                           bg-stone-100 shadow-zinc-400"
+                            md:mx-auto md:rounded-lg shadow-md bg-stone-100 shadow-zinc-400"
                         >
-                            <span className="font-bold">Sort by:</span>
-                            {['updated_at', 'title', 'status'].map((el) => (
+                            <div>
+                                <span className="font-bold">Sort by:</span>
+                                {['updated_at', 'title', 'status'].map((el) => (
+                                    <button
+                                        key={el}
+                                        className={`mx-1 px-1 py-1 border border-slate-950 md:hover:scale-110 
+                                            transition-all duration-200 ease-in-out shadow-md
+                                            rounded-lg w-fit md:w-28 ${el == sortBy ? 'bg-emerald-300' : ' bg-white'}`}
+                                        onClick={() => handleSort(el)}
+                                    >
+                                        {el.split('_').join(' ').toUpperCase()}
+                                    </button>
+                                ))}
+                            </div>
+                            <div>
+                                <span className="font-bold">
+                                    Sort Direction:
+                                </span>
                                 <button
-                                    key={el}
-                                    className={`mx-1 px-1 py-1 border border-slate-950 
-                                    rounded-lg w-fit md:w-28 ${el == sortBy ? 'bg-emerald-300' : ' bg-white'}`}
-                                    onClick={() => handleSort(el)}
+                                    className={`mx-1 p-1 border border-slate-950 rounded-lg 
+                                        md:hover:scale-110 transition-all duration-200 ease-in-out shadow-md
+                                        m-1 w-20 ${sortDirection == 'asc' ? 'bg-yellow-300' : 'bg-orange-300'}`}
+                                    onClick={handleSortDirectionChange}
                                 >
-                                    {el.split('_').join(' ').toUpperCase()}
+                                    {sortDirection.toUpperCase()}
                                 </button>
-                            ))}
-                            <span className="font-bold">Sort Direction:</span>
-                            <button
-                                className={`mx-1 p-1 border border-slate-950 rounded-lg m-1 w-20 ${sortDirection == 'asc' ? 'bg-yellow-300' : 'bg-orange-300'}`}
-                                onClick={handleSortDirectionChange}
-                            >
-                                {sortDirection.toUpperCase()}
-                            </button>
+                            </div>
                         </div>
                     </section>
                     {/* ---------------------------TodoList--------------------------- */}

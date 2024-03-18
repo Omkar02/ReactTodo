@@ -13,7 +13,9 @@
         "moduleResolution": "NodeNext",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "noEmit": true
+        "noEmit": true,
+        "jsx": "react",
+        "allowImportingTsExtensions": true
     },
-    "include": ["src"]
+    "include": ["src", "test/main.spec.ts"]
 }
